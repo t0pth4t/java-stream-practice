@@ -1,13 +1,25 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class AnalyticsCounter {
     public static Map<Long,Long> Count(Map<Character,VisitorInfo>... input){
-        Map<Long,Long> result = new HashMap<>();
-        for(Map<Character, VisitorInfo> visitorInfoMap : input){
+        Map<Long,Long> visitorCounts = new HashMap<>();
+        Arrays.stream(input)
+                .filter(Objects::nonNull)
+                .flatMap(map -> map.entrySet().stream())
+                .forEach((entry -> {
+                    VisitorInfo visitorInfo = entry.getValue();
+                    try{
+                        Long visitorKey = Long.parseLong(entry.getKey().toString());
+                        Optional<Long> visitCount = visitorInfo.getVisitCount();
+                        visitCount.ifPresent(count -> visitorCounts.put(visitorKey, visitorCounts.getOrDefault(visitorKey, 0L) + count));
+                    }
+                    catch(Exception e){
+                        // do nothing
+                    }
+                }));
+/*        for(Map<Character, VisitorInfo> visitorInfoMap : input){
             if(visitorInfoMap == null){
                 continue;
             }
@@ -19,17 +31,14 @@ public class AnalyticsCounter {
                 try{
                     Long visitorKey = Long.parseLong(entry.getKey().toString());
                     Optional<Long> visitCount = visitorInfo.getVisitCount();
-
-                    if(visitCount.isPresent()){
-                        result.put(visitorKey, result.getOrDefault(visitCount.get(), 0L) + 1);
-                    }
+                    visitCount.ifPresent(count -> visitorCounts.put(visitorKey, count));
                 }
                 catch(Exception e){
                     continue;
                 }
 
             }
-        }
-        return result;
+        }*/
+        return visitorCounts;
     }
 }
