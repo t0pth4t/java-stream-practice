@@ -5,6 +5,9 @@ import java.util.*;
 public class AnalyticsCounter {
     public static Map<Long,Long> Count(Map<Character,VisitorInfo>... input){
         Map<Long,Long> visitorCounts = new HashMap<>();
+        if(input == null){
+            return visitorCounts;
+        }
 /*        Arrays.stream(input)
                 .filter(Objects::nonNull)
                 .flatMap(map -> map.entrySet().stream())

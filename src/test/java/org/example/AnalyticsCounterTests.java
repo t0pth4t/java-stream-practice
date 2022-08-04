@@ -52,4 +52,10 @@ public class AnalyticsCounterTests {
         assert result.isEmpty();
     }
 
+    @Test
+    public void testAnalyticsCounterWorksWithNull() {
+        Map<Long, Long> result = AnalyticsCounter.Count(null);
+        assert result.isEmpty();
+    }
+
 }
