@@ -42,4 +42,14 @@ public class AnalyticsCounterTests {
         assert result.get(1L) == 1L;
     }
 
+    @Test
+    public void testAnalyticsCounterWorksWithNullVisitorInfo() {
+        Map<Character, VisitorInfo>[] input = new Map[2];
+        Map<Character, VisitorInfo> visitorInfoMapOne = new java.util.HashMap<>();
+        visitorInfoMapOne.put('1', null);
+        input[0] = visitorInfoMapOne;
+        Map<Long, Long> result = AnalyticsCounter.Count(input);
+        assert result.isEmpty();
+    }
+
 }
